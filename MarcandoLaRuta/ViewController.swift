@@ -29,6 +29,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         manejador.requestWhenInUseAuthorization()
         
         mapa.mapType = MKMapType.standard
+        manejador.distanceFilter = 50
+        
         //print("Span-info")
         //print(String(format: "%.2f",mapa.region.span.latitudeDelta) + ", " + String(format: "%.2f",mapa.region.span.longitudeDelta))
     }
@@ -57,14 +59,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let myLocation: CLLocation = locations[0]
-        var deltaLatitude: CLLocationDegrees = mapa.region.span.latitudeDelta
-        var deltaLongitude: CLLocationDegrees = mapa.region.span.longitudeDelta
         
         if lastLocation == nil {
             startLocation = myLocation
             lastLocation = myLocation
-            deltaLatitude = 0.01
-            deltaLongitude = 0.01
         }
         
         let distancia = myLocation.distance(from: lastLocation!)
@@ -89,8 +87,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         let latitude: CLLocationDegrees = myLocation.coordinate.latitude
         let longitude: CLLocationDegrees = myLocation.coordinate.longitude
-        //let deltaLatitude: CLLocationDegrees = 0.01
-        //let deltaLongitude: CLLocationDegrees = 0.01
+        let deltaLatitude: CLLocationDegrees = 0.01
+        let deltaLongitude: CLLocationDegrees = 0.01
         let span: MKCoordinateSpan = MKCoordinateSpanMake(deltaLatitude, deltaLongitude)
         
         let location: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -99,6 +97,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         
         mapa.setRegion(region, animated: true)
         
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        let alertBox = UIAlertController(title: "Error Location Manager", message: "error \(error)", preferredStyle: .alert)
+        let actionOk = UIAlertAction(title: "OK", style: .default, handler: nil)
+        
+        alertBox.addAction(actionOk)
+        self.present(alertBox, animated: true, completion: nil)
     }
 
     
