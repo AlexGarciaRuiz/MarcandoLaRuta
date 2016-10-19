@@ -75,9 +75,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             let pin = MKPointAnnotation()
             let distanciaTotal = myLocation.distance(from: startLocation!)
             
-            pin.title = String(format: "%.4f",punto.latitude) + ", " +
-                String(format: "%.4f",punto.longitude)
-            pin.subtitle = String(format: "%.2f",distanciaTotal)
+            pin.title = String(format: "Lat: %.4f",punto.latitude) + ", " +
+                String(format: "Lon: %.4f",punto.longitude)
+            pin.subtitle = String(format: "Distancia: %.2f",distanciaTotal)
             pin.coordinate = punto
             
             mapa.addAnnotation(pin)
